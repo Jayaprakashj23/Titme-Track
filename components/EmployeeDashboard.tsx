@@ -65,7 +65,11 @@ export function EmployeeDashboard() {
         }
       })
 
-      return () => subscription.unsubscribe()
+      return () => {
+        if (subscription?.unsubscribe) {
+          subscription.unsubscribe()
+        }
+      }
     }
   }, [user])
 
@@ -113,8 +117,10 @@ export function EmployeeDashboard() {
       setWorkingHours('0h 0m')
       
       // Refresh time entries list
-      const entries = await getTimeEntriesForEmployee(user.id)
-      setTimeEntries(entries)
+      if (user?.id) {
+        const entries = await getTimeEntriesForEmployee(user.id)
+        setTimeEntries(entries)
+      }
     } catch (error) {
       console.error('Error clocking out:', error)
       alert('Failed to clock out. Please try again.')
@@ -136,8 +142,7 @@ export function EmployeeDashboard() {
 
   // Convert database entries to component format
   const formattedEntries = timeEntries.map(entry => ({
-    id: entry.id,
-    employeeId: entry.employee_id,
+    ...entry,
     clockIn: new Date(entry.clock_in),
     clockOut: entry.clock_out ? new Date(entry.clock_out) : undefined,
     date: entry.date
@@ -166,14 +171,7 @@ export function EmployeeDashboard() {
           onClockOut={handleClockOut}
         />
 
-        {profile && <EmployeeInfoCard user={{
-          id: profile.id,
-          name: profile.name,
-          email: profile.email,
-          role: profile.role,
-          department: profile.department,
-          position: profile.position
-        }} />}
+        {profile && <EmployeeInfoCard user={profile} />}
 
         <TimeEntriesCard timeEntries={formattedEntries} />
       </div>

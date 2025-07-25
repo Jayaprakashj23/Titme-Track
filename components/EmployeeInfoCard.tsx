@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { User } from '../App';
+import type { Profile } from '../lib/supabase';
 
 interface EmployeeInfoCardProps {
-  user: User;
+  user: Profile;
 }
 
 export function EmployeeInfoCard({ user }: EmployeeInfoCardProps) {
