@@ -184,7 +184,7 @@ export function AdminDashboard() {
                   <TableBody>
                     {timeEntries.map((entry) => {
                       const clockIn = new Date(entry.clock_in)
-                      const clockOut = entry.clock_out ? new Date(entry.clock_out) : null
+                      const clockOut = entry.clock_out ? new Date(entry.clock_out) : undefined
                       
                       return (
                         <TableRow key={entry.id}>

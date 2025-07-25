@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { TimeEntry } from '../App';
+import type { TimeEntry } from '../lib/supabase';
 import { formatTime, getHoursWorked } from '../utils/timeUtils';
 
 interface TimeEntriesCardProps {
@@ -23,13 +23,16 @@ export function TimeEntriesCard({ timeEntries }: TimeEntriesCardProps) {
               <div>
                 <div className="font-medium">{entry.date}</div>
                 <div className="text-sm text-muted-foreground">
-                  {formatTime(entry.clockIn)} - {entry.clockOut ? formatTime(entry.clockOut) : 'In Progress'}
+                  {formatTime(new Date(entry.clock_in))} - {entry.clock_out ? formatTime(new Date(entry.clock_out)) : 'In Progress'}
                 </div>
               </div>
               <div className="text-right">
-                <div className="font-medium">{getHoursWorked(entry)}</div>
-                <Badge variant={entry.clockOut ? "secondary" : "default"} className="text-xs">
-                  {entry.clockOut ? "Completed" : "Active"}
+                <div className="font-medium">{getHoursWorked({
+                  clockIn: new Date(entry.clock_in),
+                  clockOut: entry.clock_out ? new Date(entry.clock_out) : undefined
+                })}</div>
+                <Badge variant={entry.clock_out ? "secondary" : "default"} className="text-xs">
+                  {entry.clock_out ? "Completed" : "Active"}
                 </Badge>
               </div>
             </div>

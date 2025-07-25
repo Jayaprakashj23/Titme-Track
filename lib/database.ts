@@ -134,14 +134,15 @@ export const getProfile = async (userId: string): Promise<Profile | null> => {
     // Check session mock users
     const mockUsers = getMockUsers()
     for (const [email, userData] of Object.entries(mockUsers)) {
-      if (userData.id === userId) {
+      const user = userData as any;
+      if (user.id === userId) {
         return {
-          id: userData.id,
-          email: userData.email,
-          name: userData.name,
-          role: userData.role,
-          department: userData.department || null,
-          position: userData.position || null,
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          department: user.department || null,
+          position: user.position || null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         }
@@ -181,14 +182,15 @@ export const getAllEmployees = async (): Promise<Profile[]> => {
     // Add session mock users who are employees
     const mockUsers = getMockUsers()
     for (const [email, userData] of Object.entries(mockUsers)) {
-      if (userData.role === 'employee') {
+      const user = userData as any;
+      if (user.role === 'employee') {
         employees.push({
-          id: userData.id,
-          email: userData.email,
-          name: userData.name,
-          role: userData.role,
-          department: userData.department || null,
-          position: userData.position || null,
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          department: user.department || null,
+          position: user.position || null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         })
